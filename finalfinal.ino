@@ -131,8 +131,24 @@ void loop() {
 		LedOFF(BLUE);
 
 		if(start_button) {
-			Serial.println("SYSTEM STARTED \n");
-			start_button = false;
+		//	Serial.println("SYSTEM STARTED \n");
+    U0putchar('S');
+    U0putchar('Y');
+    U0putchar('S');
+    U0putchar('T');
+    U0putchar('E');
+    U0putchar('M');
+    U0putchar(' ');
+    U0putchar('S');
+    U0putchar('T');
+    U0putchar('A');
+    U0putchar('R');
+    U0putchar('T');
+    U0putchar('E');
+    U0putchar('D');
+    U0putchar('\n');
+
+    	start_button = false;
 			state = RUNNING;
 		}
 		break;
@@ -154,6 +170,8 @@ void loop() {
 
 	case RUNNING:
 		start_button = false;
+    stop_button = false;
+    restart_button = false;
 		FanON();
 		LedON(BLUE);
 		LedOFF(RED);
@@ -190,8 +208,9 @@ void loop() {
 			//fan is already off
 		}
 		if(waterLevel > WaterLevelThreshHold) {
-			if(restart_button) {
+        if(restart_button) {
 				state = IDLE;
+
 			}
 		}
 		break;
@@ -227,6 +246,7 @@ void U0putchar(unsigned char U0pdata) {
 	while ((*myUCSR0A & TBE) == 0);
 	*myUDR0 = U0pdata;
 }
+
 void adc_init()
 {
 	// setup the A register
@@ -293,14 +313,10 @@ void FanOFF() {
 	*port_b &= ~0x40;
 }
 void Stop_button() {
-	//*port_c &= ~0x0C;
 	*port_c |= 0x04;
-	Serial.println("Stop button pressed \n");
 }
 void Restart_button() {
-	//*port_c &= ~0x0C;
-	*port_c |= 0x08;
-	Serial.println("restart button pressed \n");
+  *port_c |= 0x08;
 }
 void DisplayLCD() {
 	lcd.clear();
